@@ -1,0 +1,141 @@
+Задание:
+1. Создать базу данных Shop
+2. Создать таблицы Order, Customer, Product
+CREATE TABLE Products
+
+(
+
+    Id INT IDENTITY PRIMARY KEY,
+
+    ProductName NVARCHAR(30) NOT NULL,
+
+    Manufacturer NVARCHAR(20) NOT NULL,
+
+    ProductCount INT DEFAULT 0,
+
+    Price MONEY NOT NULL
+
+);
+
+CREATE TABLE Customers
+
+(
+
+    Id INT IDENTITY PRIMARY KEY,
+
+    FirstName NVARCHAR(30) NOT NULL
+
+);
+
+CREATE TABLE Orders
+
+(
+
+    Id INT IDENTITY PRIMARY KEY,
+
+    ProductId INT NOT NULL REFERENCES Products(Id) ON DELETE CASCADE,
+
+    CustomerId INT NOT NULL REFERENCES Customers(Id) ON DELETE CASCADE,
+
+    CreatedAt DATE NOT NULL,
+
+    ProductCount INT DEFAULT 1,
+
+    Price MONEY NOT NULL
+
+);
+
+3. Изменить таблицу Customers, добавив следующие поля:
+
+LastName NVARCHAR(20)
+Email VARCHAR(30),
+Phone VARCHAR(20)
+
+4. Заполнить таблицы тестовыми данными (5-7 ЗАПИСЕЙ).
+
+5. Выполнить запросы, представленные в лекции: 
+
+Определить были ли заказы за последние 10 дней.
+Посчитать количество заказов и общую вырученную сумму.
+6. Внести изменения в пример 2 таким образом, чтобы можно было вычислять значения за некоторый период. 
+
+7. На проверку отправить текст запросов из пунктов 3-6.
+
+
+
+
+
+USE gr691_msi
+GO
+
+/*CREATE TABLE products 
+(
+	PRIMARY KEY (product_id),
+	product_id					INT				IDENTITY(1,1)	        ,
+	product_name				NVARCHAR(30)					NOT NULL,
+	product_manufacturer		NVARCHAR(20)					NOT NULL,
+	product_count				INT				DEFAULT 0               ,
+	product_price				MONEY							NOT NULL,
+);
+
+CREATE TABLE customers
+(
+	PRIMARY KEY (customer_id),
+	customer_id					INT				IDENTITY(1,1)			,
+	customer_first_name			NVARCHAR(30)					NOT NULL,
+);
+
+CREATE TABLE orders
+(
+	PRIMARY KEY (order_id),
+	order_id					INT				IDENTITY(1,1),
+	order_product_id			INT				REFERENCES products (product_id) ON DELETE CASCADE		NOT NULL, 
+	order_customer_id			INT				REFERENCES customers (customer_id) ON DELETE CASCADE	NOT NULL, 
+	order_created_at			DATE																	NOT NULL,
+	order_product_count			INT				DEFAULT 1,
+	order_price					MONEY																	NOT NULL,
+);*/
+
+/*ALTER TABLE customers
+ADD customer_last_name NVARCHAR(20),
+	customer_email VARCHAR(30),
+	customer_phone VARCHAR(20)*/
+
+/*INSERT INTO products VALUES
+('Эчпочмаки', 'ФидЭнтертэймэнт', 123, 228),
+('PS5', 'Sosony', 5, 999),
+('Cyberpunk2077', 'CDPR', 100000, 40),
+('Дезодорант', 'Rexona', 2, 321),
+('Панама', 'Палмер', 20, 1);*/
+
+/*SELECT * FROM products;*/
+
+/*INSERT INTO customers VALUES
+('Johnny', 'Silverhand', 'johnnysilverhand123@gmail.com', '88005553535'),
+('Delayla', 'Jones', 'dfjghdfjkgdfh@fdgjh.com', '85345737382'),
+('Halk', 'Crushit', 'halk228@mail.com', '23423424234'),
+('Mc', 'KEKW', 'kekich1337@ya.ru', '42374623786'),
+('Poro', 'Coco', 'CocoPoro@jail.com', '13372281488');*/
+
+/*SELECT * FROM customers;*/
+
+/*INSERT INTO orders VALUES
+(1, 5, '2020-01-01', 3, 100),
+(2, 4, '2020-01-10', 6, 200),
+(3, 3, '2020-10-25', 9, 300),
+(4, 2, '2020-06-06', 12, 450),
+(5, 1, '2020-12-12', 15, 500);*/
+
+/*SELECT * FROM orders;*/
+
+/*SELECT * FROM orders 
+WHERE DATEDIFF(DAY, order_created_at, GETDATE()) <= 10;*/
+
+/*SELECT COUNT(*) AS 'Количество заказов', 
+	   SUM(order_product_count * CAST(order_price AS FLOAT)) 
+	   AS 'Общая сумма' FROM orders;*/
+
+/*SELECT COUNT(*) AS 'Количество заказов',
+	   SUM(order_product_count * CAST(order_price AS FLOAT))
+	   AS 'Общая сумма' FROM orders
+	   WHERE order_created_at BETWEEN '2020-10-01' AND '2020-12-30';*/

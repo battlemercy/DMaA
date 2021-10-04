@@ -1,0 +1,82 @@
+1. Выполнить запрос, позволяющий рассчитать баланс счета через несколько лет с учетом процентной ставки (см. пример в лекции);
+2. Выполнить запрос, создающий таблицу Accounts, с указанными полями (см. пример в лекции) с учетом обработки ошибок и без учета. Сравнить результаты;
+3. Показать результаты выполнения;
+4. Написать запрос позволяющий удалить таблицу Accounts из базы данных Shopdb;
+5. Внести изменения в скрипт, наполняющий данными таблицы базы данных Shopdb, добавив возможность обработать ошибки;
+6. Сохранить скрипт с именем InsShopDB.sql;
+7. Добавить еще по 3 записи в каждую из таблиц базы данных Shopdb, используя данный скрипт;
+8. Показать скрипт и результат его выполнения;
+9. Отправить содержимое файла  InsShopDB.sql на проверку.
+
+
+
+USE gr691_msi
+GO
+
+/* 1 
+CREATE TABLE accounts 
+(
+	account_created_at DATE,
+	account_balance MONEY
+);*/
+
+/*DECLARE @rate FLOAT, @period INT, @sum MONEY, @date DATE;
+SET @date = GETDATE();
+SET @rate = 0.075;
+SET @period = 7;
+SET @sum = 11500;
+
+WHILE @period > 0
+	BEGIN
+		INSERT INTO accounts VALUES (@date, @sum);
+		SET @period = @period - 1;
+		SET @date = DATEADD(YEAR, 1, @date);
+		SET @sum = @sum + @sum * @rate;
+	END;*/
+
+/* 2 
+
+DECLARE @rate FLOAT, @period INT, @sum MONEY, @date DATE;
+SET @date = GETDATE();
+SET @rate = 0.075;
+SET @period = 7;
+SET @sum = 11500;
+
+BEGIN TRY
+	WHILE @period > 0
+		BEGIN
+			INSERT INTO accounts VALUES (@date, @sum);
+			SET @period = @period - 1;
+			SET @date = DATEADD(YEAR, 1, @date);
+			SET @sum = @sum + @sum * @rate;
+		END;
+END TRY
+
+BEGIN CATCH
+	 PRINT 'Error ' + CONVERT(VARCHAR, ERROR_NUMBER()) + ':' + ERROR_MESSAGE()
+END CATCH;
+
+SELECT * FROM accounts;
+
+DROP TABLE accounts;
+*/
+
+/*CREATE PROCEDURE InsShopDB
+@rate FLOAT, @period INT, @sum MONEY, @date DATE
+AS
+BEGIN TRY
+	WHILE @period > 0
+		BEGIN
+			INSERT INTO accounts VALUES (@date, @sum);
+			SET @period = @period - 1;
+			SET @date = DATEADD(YEAR, 1, @date);
+			SET @sum = @sum + @sum * @rate;
+		END;
+		SELECT * FROM accounts
+END TRY
+
+BEGIN CATCH
+	 PRINT 'Error ' + CONVERT(VARCHAR, ERROR_NUMBER()) + ':' + ERROR_MESSAGE()
+END CATCH;*/
+
+/*EXEC InsShopDB 0.15, 3, 33000, '2020-07-21'*/
